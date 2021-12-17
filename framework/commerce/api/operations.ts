@@ -2,7 +2,6 @@ import type { ServerResponse } from 'http'
 import type { LoginOperation } from '../types/login'
 import type { GetAllPagesOperation, GetPageOperation } from '../types/page'
 import type { GetSiteInfoOperation } from '../types/site'
-import type { GetCustomerWishlistOperation } from '../types/wishlist'
 import type {
   GetAllProductPathsOperation,
   GetAllProductsOperation,
@@ -19,7 +18,6 @@ export const OPERATIONS = [
   'getAllPages',
   'getPage',
   'getSiteInfo',
-  'getCustomerWishlist',
   'getAllProductPaths',
   'getAllProducts',
   'getProduct',
@@ -89,22 +87,6 @@ export type Operations<P extends APIProvider> = {
       opts: {
         config?: P['config']
         preview?: boolean
-      } & OperationOptions
-    ): Promise<T['data']>
-  }
-
-  getCustomerWishlist: {
-    <T extends GetCustomerWishlistOperation>(opts: {
-      variables: T['variables']
-      config?: P['config']
-      includeProducts?: boolean
-    }): Promise<T['data']>
-
-    <T extends GetCustomerWishlistOperation>(
-      opts: {
-        variables: T['variables']
-        config?: P['config']
-        includeProducts?: boolean
       } & OperationOptions
     ): Promise<T['data']>
   }

@@ -9,7 +9,6 @@ import {
 
 import type {
   Customer,
-  Wishlist,
   Cart,
   Product,
   Signup,
@@ -33,11 +32,6 @@ export type Provider = CommerceConfig & {
   checkout?: {
     useCheckout?: SWRHook<Checkout.GetCheckoutHook>
     useSubmitCheckout?: MutationHook<Checkout.SubmitCheckoutHook>
-  }
-  wishlist?: {
-    useWishlist?: SWRHook<Wishlist.GetWishlistHook>
-    useAddItem?: MutationHook<Wishlist.AddItemHook>
-    useRemoveItem?: MutationHook<Wishlist.RemoveItemHook>
   }
   customer?: {
     useCustomer?: SWRHook<Customer.CustomerHook>
