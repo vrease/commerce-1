@@ -1,9 +1,8 @@
 import useAddItem, { UseAddItem } from '@commerce/customer/address/use-add-item'
-import { MutationHook } from '@commerce/utils/types'
 
-export default useAddItem as UseAddItem<typeof handler>
+export default useAddItem
 
-export const handler: MutationHook<any> = {
+export const handler = {
   fetchOptions: {
     query: '',
   },

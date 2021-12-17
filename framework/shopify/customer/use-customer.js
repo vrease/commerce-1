@@ -1,19 +1,16 @@
-import useCustomer, { UseCustomer } from '@commerce/customer/use-customer'
-import type { CustomerHook } from '../types/customer'
-import { SWRHook } from '@commerce/utils/types'
+import useCustomer from '@commerce/customer/use-customer'
 import { getCustomerQuery, getCustomerToken } from '../utils'
-import { GetCustomerQuery, GetCustomerQueryVariables } from '../schema'
 
-export default useCustomer as UseCustomer<typeof handler>
+export default useCustomer
 
-export const handler: SWRHook<CustomerHook> = {
+export const handler = {
   fetchOptions: {
     query: getCustomerQuery,
   },
   async fetcher({ options, fetch }) {
     const customerAccessToken = getCustomerToken()
     if (customerAccessToken) {
-      const data = await fetch<GetCustomerQuery, GetCustomerQueryVariables>({
+      const data = await fetch({
         ...options,
         variables: { customerAccessToken: getCustomerToken() },
       })
