@@ -1,13 +1,5 @@
 import { SWRHook } from '@commerce/utils/types'
-import useSearch, { UseSearch } from '@commerce/product/use-search'
-
-import {
-  CollectionEdge,
-  GetAllProductsQuery,
-  GetProductsFromCollectionQueryVariables,
-  Product as ShopifyProduct,
-  ProductEdge,
-} from '../schema'
+import useSearch from '@commerce/product/use-search'
 
 import {
   getAllProductsQuery,
@@ -16,19 +8,9 @@ import {
   normalizeProduct,
 } from '../utils'
 
-import type { SearchProductsHook } from '../types/product'
+export default useSearch
 
-export type SearchProductsInput = {
-  search?: string
-  categoryId?: number
-  brandId?: number
-  sort?: string
-  locale?: string
-}
-
-export default useSearch as UseSearch<typeof handler>
-
-export const handler: SWRHook<SearchProductsHook> = {
+export const handler = {
   fetchOptions: {
     query: getAllProductsQuery,
   },
@@ -40,10 +22,7 @@ export const handler: SWRHook<SearchProductsHook> = {
 
     // change the query to getCollectionProductsQuery when categoryId is set
     if (categoryId) {
-      const data = await fetch<
-        CollectionEdge,
-        GetProductsFromCollectionQueryVariables
-      >({
+      const data = await fetch({
         query: getCollectionProductsQuery,
         method,
         variables,
@@ -51,12 +30,12 @@ export const handler: SWRHook<SearchProductsHook> = {
       // filter on client when brandId & categoryId are set since is not available on collection product query
       products = brandId
         ? data.node?.products?.edges?.filter(
-            ({ node: { vendor } }: ProductEdge) =>
+            ({ node: { vendor } }) =>
               vendor.replace(/\s+/g, '-').toLowerCase() === brandId
           )
         : data.node?.products?.edges
     } else {
-      const data = await fetch<GetAllProductsQuery>({
+      const data = await fetch({
         query: options.query,
         method,
         variables,
@@ -65,9 +44,7 @@ export const handler: SWRHook<SearchProductsHook> = {
     }
 
     return {
-      products: products?.map(({ node }) =>
-        normalizeProduct(node as ShopifyProduct)
-      ),
+      products: products?.map(({ node }) => normalizeProduct(node)),
       found: !!products?.length,
     }
   },
