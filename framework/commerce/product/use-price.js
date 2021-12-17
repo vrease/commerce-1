@@ -1,15 +1,7 @@
 import { useMemo } from 'react'
 import { useCommerce } from '..'
 
-export function formatPrice({
-  amount,
-  currencyCode,
-  locale,
-}: {
-  amount: number
-  currencyCode: string
-  locale: string
-}) {
+export function formatPrice({ amount, currencyCode, locale }) {
   const formatCurrency = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
@@ -23,11 +15,6 @@ export function formatVariantPrice({
   baseAmount,
   currencyCode,
   locale,
-}: {
-  baseAmount: number
-  amount: number
-  currencyCode: string
-  locale: string
 }) {
   const hasDiscount = baseAmount > amount
   const formatDiscount = new Intl.NumberFormat(locale, { style: 'percent' })
@@ -43,13 +30,7 @@ export function formatVariantPrice({
   return { price, basePrice, discount }
 }
 
-export default function usePrice(
-  data?: {
-    amount: number
-    baseAmount?: number
-    currencyCode: string
-  } | null
-) {
+export default function usePrice(data) {
   const { amount, baseAmount, currencyCode } = data ?? {}
   const { locale } = useCommerce()
   const value = useMemo(() => {
