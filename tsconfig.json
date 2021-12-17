@@ -27,7 +27,14 @@
       "@framework/*": ["framework/shopify/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "lib/focus-trap.s"
+  ],
   "exclude": [
     "node_modules",
     "./framework/local",
