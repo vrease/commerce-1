@@ -1,10 +1,7 @@
 import { useCallback } from 'react'
-import type { MutationHook } from '@commerce/utils/types'
 import { CommerceError } from '@commerce/utils/errors'
 import useSignup, { UseSignup } from '@commerce/auth/use-signup'
-import type { SignupHook } from '../types/signup'
 import useCustomer from '../customer/use-customer'
-import { Mutation, MutationCustomerCreateArgs } from '../schema'
 
 import {
   handleAutomaticLogin,
@@ -12,9 +9,9 @@ import {
   customerCreateMutation,
 } from '../utils'
 
-export default useSignup as UseSignup<typeof handler>
+export default useSignup
 
-export const handler: MutationHook<SignupHook> = {
+export const handler = {
   fetchOptions: {
     query: customerCreateMutation,
   },
@@ -30,10 +27,7 @@ export const handler: MutationHook<SignupHook> = {
       })
     }
 
-    const { customerCreate } = await fetch<
-      Mutation,
-      MutationCustomerCreateArgs
-    >({
+    const { customerCreate } = await fetch({
       ...options,
       variables: {
         input: {

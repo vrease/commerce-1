@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
-import type { MutationHook } from '@commerce/utils/types'
 import { CommerceError } from '@commerce/utils/errors'
-import useLogin, { UseLogin } from '@commerce/auth/use-login'
-import type { LoginHook } from '../types/login'
+import useLogin from '@commerce/auth/use-login'
 import useCustomer from '../customer/use-customer'
 
 import {
@@ -10,11 +8,10 @@ import {
   throwUserErrors,
   customerAccessTokenCreateMutation,
 } from '../utils'
-import { Mutation, MutationCustomerAccessTokenCreateArgs } from '../schema'
 
-export default useLogin as UseLogin<typeof handler>
+export default useLogin
 
-export const handler: MutationHook<LoginHook> = {
+export const handler = {
   fetchOptions: {
     query: customerAccessTokenCreateMutation,
   },
@@ -25,10 +22,7 @@ export const handler: MutationHook<LoginHook> = {
       })
     }
 
-    const { customerAccessTokenCreate } = await fetch<
-      Mutation,
-      MutationCustomerAccessTokenCreateArgs
-    >({
+    const { customerAccessTokenCreate } = await fetch({
       ...options,
       variables: {
         input: { email, password },
