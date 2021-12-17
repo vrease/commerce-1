@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-import { Provider, useCommerce } from '..'
-import type { MutationHook, PickRequired, SWRHook } from './types'
+import { useCommerce } from '..'
 import useData from './use-data'
 
 export function useFetcher() {
@@ -8,18 +7,13 @@ export function useFetcher() {
   return providerRef.current.fetcher ?? fetcherRef.current
 }
 
-export function useHook<
-  P extends Provider,
-  H extends MutationHook<any> | SWRHook<any>
->(fn: (provider: P) => H) {
-  const { providerRef } = useCommerce<P>()
+export function useHook(fn) {
+  const { providerRef } = useCommerce()
   const provider = providerRef.current
   return fn(provider)
 }
 
-export function useSWRHook<H extends SWRHook<any>>(
-  hook: PickRequired<H, 'fetcher'>
-) {
+export function useSWRHook(hook) {
   const fetcher = useFetcher()
 
   return hook.useHook({
@@ -30,9 +24,7 @@ export function useSWRHook<H extends SWRHook<any>>(
   })
 }
 
-export function useMutationHook<H extends MutationHook<any>>(
-  hook: PickRequired<H, 'fetcher'>
-) {
+export function useMutationHook(hook) {
   const fetcher = useFetcher()
 
   return hook.useHook({
