@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
-import type { MutationHook } from '@commerce/utils/types'
 import { CommerceError } from '@commerce/utils/errors'
-import useAddItem, { UseAddItem } from '@commerce/cart/use-add-item'
-import type { AddItemHook } from '../types/cart'
+import useAddItem from '@commerce/cart/use-add-item'
 import useCart from './use-cart'
 
 import {
@@ -11,18 +9,17 @@ import {
   checkoutToCart,
   checkoutCreate,
 } from '../utils'
-import { Mutation, MutationCheckoutLineItemsAddArgs } from '../schema'
 
-export default useAddItem as UseAddItem<typeof handler>
+export default useAddItem
 
-export const handler: MutationHook<AddItemHook> = {
+export const handler = {
   fetchOptions: {
     query: checkoutLineItemAddMutation,
   },
   async fetcher({ input: item, options, fetch }) {
     if (
       item.quantity &&
-      (!Number.isInteger(item.quantity) || item.quantity! < 1)
+      (!Number.isInteger(item.quantity) || item.quantity < 1)
     ) {
       throw new CommerceError({
         message: 'The item quantity has to be a valid integer greater than 0',
@@ -41,10 +38,7 @@ export const handler: MutationHook<AddItemHook> = {
     if (!checkoutId) {
       return checkoutToCart(await checkoutCreate(fetch, lineItems))
     } else {
-      const { checkoutLineItemsAdd } = await fetch<
-        Mutation,
-        MutationCheckoutLineItemsAddArgs
-      >({
+      const { checkoutLineItemsAdd } = await fetch({
         ...options,
         variables: {
           checkoutId,
