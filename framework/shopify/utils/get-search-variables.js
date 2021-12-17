@@ -1,5 +1,4 @@
-import getSortVariables from './get-sort-variables'
-import { SearchProductsBody } from '../types/product'
+import getSortVariables from './get-sort-variables.js'
 
 export const getSearchVariables = ({
   brandId,
@@ -7,7 +6,7 @@ export const getSearchVariables = ({
   categoryId,
   sort,
   locale,
-}: SearchProductsBody) => {
+}) => {
   let query = ''
 
   if (search) {

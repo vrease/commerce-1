@@ -7,19 +7,9 @@ import {
 } from '../const'
 
 import checkoutCreateMutation from './mutations/checkout-create'
-import {
-  CheckoutCreatePayload,
-  CheckoutLineItemInput,
-  Mutation,
-  MutationCheckoutCreateArgs,
-} from '../schema'
-import { FetcherOptions } from '@commerce/utils/types'
 
-export const checkoutCreate = async (
-  fetch: <T = any, B = Body>(options: FetcherOptions<B>) => Promise<T>,
-  lineItems: CheckoutLineItemInput[]
-): Promise<CheckoutCreatePayload> => {
-  const { checkoutCreate } = await fetch<Mutation, MutationCheckoutCreateArgs>({
+export const checkoutCreate = async (fetch, lineItems) => {
+  const { checkoutCreate } = await fetch({
     query: checkoutCreateMutation,
     variables: {
       input: { lineItems },
@@ -39,7 +29,7 @@ export const checkoutCreate = async (
     }
   }
 
-  return checkoutCreate!
+  return checkoutCreate
 }
 
 export default checkoutCreate

@@ -1,41 +1,19 @@
-import type { Page } from '../types/page'
-import type { Product } from '../types/product'
-import type { Cart, LineItem } from '../types/cart'
-import type { Category } from '../types/site'
-
-import {
-  Product as ShopifyProduct,
-  Checkout,
-  CheckoutLineItemEdge,
-  SelectedOption,
-  ImageConnection,
-  ProductVariantConnection,
-  MoneyV2,
-  ProductOption,
-  Page as ShopifyPage,
-  PageEdge,
-  Collection,
-} from '../schema'
 import { colorMap } from '@lib/colors'
 
-const money = ({ amount, currencyCode }: MoneyV2) => {
+const money = ({ amount, currencyCode }) => {
   return {
     value: +amount,
     currencyCode,
   }
 }
 
-const normalizeProductOption = ({
-  id,
-  name: displayName,
-  values,
-}: ProductOption) => {
+const normalizeProductOption = ({ id, name: displayName, values }) => {
   return {
     __typename: 'MultipleChoiceOption',
     id,
     displayName: displayName.toLowerCase(),
     values: values.map((value) => {
-      let output: any = {
+      let output = {
         label: value,
       }
       if (displayName.match(/colou?r/gi)) {
@@ -52,13 +30,13 @@ const normalizeProductOption = ({
   }
 }
 
-const normalizeProductImages = ({ edges }: ImageConnection) =>
+const normalizeProductImages = ({ edges }) =>
   edges?.map(({ node: { originalSrc: url, ...rest } }) => ({
     url,
     ...rest,
   }))
 
-const normalizeProductVariants = ({ edges }: ProductVariantConnection) => {
+const normalizeProductVariants = ({ edges }) => {
   return edges?.map(
     ({
       node: {
@@ -80,7 +58,7 @@ const normalizeProductVariants = ({ edges }: ProductVariantConnection) => {
         listPrice: +compareAtPriceV2?.amount,
         requiresShipping,
         availableForSale,
-        options: selectedOptions.map(({ name, value }: SelectedOption) => {
+        options: selectedOptions.map(({ name, value }) => {
           const options = normalizeProductOption({
             id,
             name,
@@ -107,7 +85,7 @@ export function normalizeProduct({
   options,
   metafields,
   ...rest
-}: ShopifyProduct): Product {
+}) {
   return {
     id,
     name,
@@ -128,7 +106,7 @@ export function normalizeProduct({
   }
 }
 
-export function normalizeCart(checkout: Checkout): Cart {
+export function normalizeCart(checkout) {
   return {
     id: checkout.id,
     url: checkout.webUrl,
@@ -147,19 +125,17 @@ export function normalizeCart(checkout: Checkout): Cart {
   }
 }
 
-function normalizeLineItem({
-  node: { id, title, variant, quantity },
-}: CheckoutLineItemEdge): LineItem {
+function normalizeLineItem({ node: { id, title, variant, quantity } }) {
   return {
     id,
-    variantId: String(variant?.id),
-    productId: String(variant?.id),
+    variantId: variant?.id,
+    productId: variant?.id,
     name: `${title}`,
     quantity,
     variant: {
-      id: String(variant?.id),
+      id: variant?.id,
       sku: variant?.sku ?? '',
-      name: variant?.title!,
+      name: variant?.title,
       image: {
         url: variant?.image?.originalSrc || '/product-img-placeholder.svg',
       },
@@ -174,22 +150,18 @@ function normalizeLineItem({
 }
 
 export const normalizePage = (
-  { title: name, handle, ...page }: ShopifyPage,
-  locale: string = 'en-US'
-): Page => ({
+  { title: name, handle, ...page },
+  locale = 'en-US'
+) => ({
   ...page,
   url: `/${locale}/${handle}`,
   name,
 })
 
-export const normalizePages = (edges: PageEdge[], locale?: string): Page[] =>
+export const normalizePages = (edges, locale) =>
   edges?.map((edge) => normalizePage(edge.node, locale))
 
-export const normalizeCategory = ({
-  title: name,
-  handle,
-  id,
-}: Collection): Category => ({
+export const normalizeCategory = ({ title: name, handle, id }) => ({
   id,
   name,
   slug: handle,

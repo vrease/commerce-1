@@ -1,10 +1,8 @@
-import { FetcherOptions } from '@commerce/utils/types'
-import { CustomerAccessTokenCreateInput } from '../schema'
 import { setCustomerToken } from './customer-token'
 import { customerAccessTokenCreateMutation } from './mutations'
-import throwUserErrors from './throw-user-errors'
+import throwUserErrors from './throw-user-errors.js'
 
-const handleLogin = (data: any) => {
+const handleLogin = (data) => {
   const response = data.customerAccessTokenCreate
   throwUserErrors(response?.customerUserErrors)
 
@@ -18,10 +16,7 @@ const handleLogin = (data: any) => {
   return customerAccessToken
 }
 
-export const handleAutomaticLogin = async (
-  fetch: <T = any, B = Body>(options: FetcherOptions<B>) => Promise<T>,
-  input: CustomerAccessTokenCreateInput
-) => {
+export const handleAutomaticLogin = async (fetch, input) => {
   try {
     const loginData = await fetch({
       query: customerAccessTokenCreateMutation,

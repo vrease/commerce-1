@@ -1,16 +1,16 @@
 import { FetcherError } from '@commerce/utils/errors'
 
-export function getError(errors: any[] | null, status: number) {
+export function getError(errors, status) {
   errors = errors ?? [{ message: 'Failed to fetch Shopify API' }]
   return new FetcherError({ errors, status })
 }
 
-export async function getAsyncError(res: Response) {
+export async function getAsyncError(res) {
   const data = await res.json()
   return getError(data.errors, res.status)
 }
 
-const handleFetchResponse = async (res: Response) => {
+const handleFetchResponse = async (res) => {
   if (res.ok) {
     const { data, errors } = await res.json()
 
