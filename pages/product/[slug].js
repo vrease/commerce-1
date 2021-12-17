@@ -1,24 +1,14 @@
-import type {
-  GetStaticPathsContext,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from 'next'
 import { useRouter } from 'next/router'
 import commerce from '@lib/api/commerce'
 import { Layout } from '@components/common'
 import { ProductView } from '@components/product'
 
-export async function getStaticProps({
-  params,
-  locale,
-  locales,
-  preview,
-}: GetStaticPropsContext<{ slug: string }>) {
+export async function getStaticProps({ params, locale, locales, preview }) {
   const config = { locale, locales }
   const pagesPromise = commerce.getAllPages({ config, preview })
   const siteInfoPromise = commerce.getSiteInfo({ config, preview })
   const productPromise = commerce.getProduct({
-    variables: { slug: params!.slug },
+    variables: { slug: params.slug },
     config,
     preview,
   })
@@ -34,7 +24,7 @@ export async function getStaticProps({
   const { products: relatedProducts } = await allProductsPromise
 
   if (!product) {
-    throw new Error(`Product with slug '${params!.slug}' not found`)
+    throw new Error(`Product with slug '${params.slug}' not found`)
   }
 
   return {
@@ -48,27 +38,24 @@ export async function getStaticProps({
   }
 }
 
-export async function getStaticPaths({ locales }: GetStaticPathsContext) {
+export async function getStaticPaths({ locales }) {
   const { products } = await commerce.getAllProductPaths()
 
   return {
     paths: locales
-      ? locales.reduce<string[]>((arr, locale) => {
+      ? locales.reduce((arr, locale) => {
           // Add a product path for every locale
-          products.forEach((product: any) => {
+          products.forEach((product) => {
             arr.push(`/${locale}/product${product.path}`)
           })
           return arr
         }, [])
-      : products.map((product: any) => `/product${product.path}`),
+      : products.map((product) => `/product${product.path}`),
     fallback: 'blocking',
   }
 }
 
-export default function Slug({
-  product,
-  relatedProducts,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Slug({ product, relatedProducts }) {
   const router = useRouter()
 
   return router.isFallback ? (
