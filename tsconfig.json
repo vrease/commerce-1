@@ -33,7 +33,10 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.js",
-    "lib/focus-trap.s"
+    "lib/focus-trap.s",
+    "framework/shopify/utils/mutations/index.tjs",
+    "framework/shopify/utils/get-sort-variables.s",
+    "framework/shopify/utils/throw-user-errors.s"
   ],
   "exclude": [
     "node_modules",

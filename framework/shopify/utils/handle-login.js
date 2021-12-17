@@ -1,5 +1,5 @@
 import { setCustomerToken } from './customer-token'
-import { customerAccessTokenCreateMutation } from './mutations'
+import { customerAccessTokenCreateMutation } from './mutations/index.js'
 import throwUserErrors from './throw-user-errors.js'
 
 const handleLogin = (data) => {
