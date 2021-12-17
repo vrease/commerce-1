@@ -1,8 +1,7 @@
-import { Fetcher } from '@commerce/utils/types'
 import { API_TOKEN, API_URL } from './const'
 import { handleFetchResponse } from './utils'
 
-const fetcher: Fetcher = async ({
+const fetcher = async ({
   url = API_URL,
   method = 'POST',
   variables,
@@ -14,7 +13,7 @@ const fetcher: Fetcher = async ({
       method,
       body: JSON.stringify({ query, variables: vars }),
       headers: {
-        'X-Shopify-Storefront-Access-Token': API_TOKEN!,
+        'X-Shopify-Storefront-Access-Token': API_TOKEN,
         'Content-Type': 'application/json',
         ...(locale && {
           'Accept-Language': locale,
