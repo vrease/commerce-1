@@ -1,12 +1,10 @@
 import cn from 'classnames'
-import type { SearchPropsType } from '@lib/search-props'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Layout } from '@components/common'
 import { ProductCard } from '@components/product'
-import type { Product } from '@commerce/types/product'
 import { Container, Skeleton } from '@components/ui'
 
 import useSearch from '@framework/product/use-search'
@@ -28,7 +26,7 @@ import {
   useSearchMeta,
 } from '@lib/search'
 
-export default function Search({ categories, brands }: SearchPropsType) {
+export default function Search({ categories, brands }) {
   const [activeFilter, setActiveFilter] = useState('')
   const [toggleFilter, setToggleFilter] = useState(false)
 
@@ -41,20 +39,20 @@ export default function Search({ categories, brands }: SearchPropsType) {
   const query = filterQuery({ sort })
 
   const { pathname, category, brand } = useSearchMeta(asPath)
-  const activeCategory = categories.find((cat: any) => cat.slug === category)
+  const activeCategory = categories.find((cat) => cat.slug === category)
   const activeBrand = brands.find(
-    (b: any) => getSlug(b.node.path) === `brands/${brand}`
+    (b) => getSlug(b.node.path) === `brands/${brand}`
   )?.node
 
   const { data } = useSearch({
     search: typeof q === 'string' ? q : '',
     categoryId: activeCategory?.id,
-    brandId: (activeBrand as any)?.entityId,
+    brandId: activeBrand?.entityId,
     sort: typeof sort === 'string' ? sort : '',
     locale,
   })
 
-  const handleClick = (event: any, filter: string) => {
+  const handleClick = (event, filter) => {
     if (filter !== activeFilter) {
       setToggleFilter(true)
     } else {
@@ -132,7 +130,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                         </a>
                       </Link>
                     </li>
-                    {categories.map((cat: any) => (
+                    {categories.map((cat) => (
                       <li
                         key={cat.path}
                         className={cn(
@@ -233,7 +231,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                         </a>
                       </Link>
                     </li>
-                    {brands.flatMap(({ node }: { node: any }) => (
+                    {brands.flatMap(({ node }) => (
                       <li
                         key={node.path}
                         className={cn(
@@ -314,7 +312,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
           )}
           {data ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {data.products.map((product: Product) => (
+              {data.products.map((product) => (
                 <ProductCard
                   variant="simple"
                   key={product.path}
@@ -351,7 +349,7 @@ export default function Search({ categories, brands }: SearchPropsType) {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  {sort ? SORT[sort as keyof typeof SORT] : 'Relevance'}
+                  {sort ? SORT[sort] : 'Relevance'}
                   <svg
                     className="-mr-1 ml-2 h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"

@@ -1,43 +1,26 @@
-import { FC } from 'react'
 import cn from 'classnames'
 
-import useAddCard from '@framework/customer/card/use-add-item'
-import { Button, Text } from '@components/ui'
+import Button from '@components/ui/Button'
 import { useUI } from '@components/ui/context'
 import SidebarLayout from '@components/common/SidebarLayout'
+import useAddAddress from '@framework/customer/address/use-add-item'
 
-import s from './PaymentMethodView.module.css'
+import s from './ShippingView.module.css'
 
-interface Form extends HTMLFormElement {
-  cardHolder: HTMLInputElement
-  cardNumber: HTMLInputElement
-  cardExpireDate: HTMLInputElement
-  cardCvc: HTMLInputElement
-  firstName: HTMLInputElement
-  lastName: HTMLInputElement
-  company: HTMLInputElement
-  streetNumber: HTMLInputElement
-  zipCode: HTMLInputElement
-  city: HTMLInputElement
-  country: HTMLSelectElement
-}
-
-const PaymentMethodView: FC = () => {
+const ShippingView = () => {
   const { setSidebarView } = useUI()
-  const addCard = useAddCard()
+  const addAddress = useAddAddress()
 
-  async function handleSubmit(event: React.ChangeEvent<Form>) {
+  async function handleSubmit(event) {
     event.preventDefault()
 
-    await addCard({
-      cardHolder: event.target.cardHolder.value,
-      cardNumber: event.target.cardNumber.value,
-      cardExpireDate: event.target.cardExpireDate.value,
-      cardCvc: event.target.cardCvc.value,
+    await addAddress({
+      type: event.target.type.value,
       firstName: event.target.firstName.value,
       lastName: event.target.lastName.value,
       company: event.target.company.value,
       streetNumber: event.target.streetNumber.value,
+      apartments: event.target.streetNumber.value,
       zipCode: event.target.zipCode.value,
       city: event.target.city.value,
       country: event.target.country.value,
@@ -50,29 +33,19 @@ const PaymentMethodView: FC = () => {
     <form className="h-full" onSubmit={handleSubmit}>
       <SidebarLayout handleBack={() => setSidebarView('CHECKOUT_VIEW')}>
         <div className="px-4 sm:px-6 flex-1">
-          <Text variant="sectionHeading"> Payment Method</Text>
+          <h2 className="pt-1 pb-8 text-2xl font-semibold tracking-wide cursor-pointer inline-block">
+            Shipping
+          </h2>
           <div>
-            <div className={s.fieldset}>
-              <label className={s.label}>Cardholder Name</label>
-              <input name="cardHolder" className={s.input} />
+            <div className="flex flex-row my-3 items-center">
+              <input name="type" className={s.radio} type="radio" />
+              <span className="ml-3 text-sm">Same as billing address</span>
             </div>
-            <div className="grid gap-3 grid-flow-row grid-cols-12">
-              <div className={cn(s.fieldset, 'col-span-7')}>
-                <label className={s.label}>Card Number</label>
-                <input name="cardNumber" className={s.input} />
-              </div>
-              <div className={cn(s.fieldset, 'col-span-3')}>
-                <label className={s.label}>Expires</label>
-                <input
-                  name="cardExpireDate"
-                  className={s.input}
-                  placeholder="MM/YY"
-                />
-              </div>
-              <div className={cn(s.fieldset, 'col-span-2')}>
-                <label className={s.label}>CVC</label>
-                <input name="cardCvc" className={s.input} />
-              </div>
+            <div className="flex flex-row my-3 items-center">
+              <input name="type" className={s.radio} type="radio" />
+              <span className="ml-3 text-sm">
+                Use a different shipping address
+              </span>
             </div>
             <hr className="border-accent-2 my-6" />
             <div className="grid gap-3 grid-flow-row grid-cols-12">
@@ -97,7 +70,7 @@ const PaymentMethodView: FC = () => {
               <label className={s.label}>
                 Apartment, Suite, Etc. (Optional)
               </label>
-              <input className={s.input} name="apartment" />
+              <input name="apartments" className={s.input} />
             </div>
             <div className="grid gap-3 grid-flow-row grid-cols-12">
               <div className={cn(s.fieldset, 'col-span-6')}>
@@ -127,4 +100,4 @@ const PaymentMethodView: FC = () => {
   )
 }
 
-export default PaymentMethodView
+export default ShippingView

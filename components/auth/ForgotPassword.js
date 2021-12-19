@@ -3,9 +3,7 @@ import { validate } from 'email-validator'
 import { useUI } from '@components/ui/context'
 import { Logo, Button, Input } from '@components/ui'
 
-interface Props {}
-
-const ForgotPassword: FC<Props> = () => {
+const ForgotPassword = () => {
   // Form State
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
@@ -15,7 +13,7 @@ const ForgotPassword: FC<Props> = () => {
 
   const { setModalView, closeModal } = useUI()
 
-  const handleResetPassword = async (e: React.SyntheticEvent<EventTarget>) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault()
 
     if (!dirty && !disabled) {

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import CartItem from '@components/cart/CartItem'
 import { Button, Text } from '@components/ui'
 import { useUI } from '@components/ui/context'
@@ -8,18 +8,18 @@ import useCart from '@framework/cart/use-cart'
 import usePrice from '@framework/product/use-price'
 import useCheckout from '@framework/checkout/use-checkout'
 import ShippingWidget from '../ShippingWidget'
-import PaymentWidget from '../PaymentWidget'
+import PaymentWidget from '../PaymentWidget/index.js'
 import s from './CheckoutSidebarView.module.css'
 import { useCheckoutContext } from '../context'
 
-const CheckoutSidebarView: FC = () => {
+const CheckoutSidebarView = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false)
   const { setSidebarView, closeSidebar } = useUI()
   const { data: cartData, revalidate: refreshCart } = useCart()
   const { data: checkoutData, submit: onCheckout } = useCheckout()
   const { clearCheckoutFields } = useCheckoutContext()
 
-  async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
+  async function handleSubmit(even) {
     try {
       setLoadingSubmit(true)
       event.preventDefault()
@@ -70,11 +70,11 @@ const CheckoutSidebarView: FC = () => {
         />
 
         <ul className={s.lineItemsList}>
-          {cartData!.lineItems.map((item: any) => (
+          {cartData.lineItems.map((item) => (
             <CartItem
               key={item.id}
               item={item}
-              currencyCode={cartData!.currency.code}
+              currencyCode={cartData.currency.code}
               variant="display"
             />
           ))}

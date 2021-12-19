@@ -1,6 +1,5 @@
 import cn from 'classnames'
 import Link from 'next/link'
-import { FC } from 'react'
 import s from './CartSidebarView.module.css'
 import CartItem from '../CartItem'
 import { Button, Text } from '@components/ui'
@@ -10,7 +9,7 @@ import useCart from '@framework/cart/use-cart'
 import usePrice from '@framework/product/use-price'
 import SidebarLayout from '@components/common/SidebarLayout'
 
-const CartSidebarView: FC = () => {
+const CartSidebarView = () => {
   const { closeSidebar, setSidebarView } = useUI()
   const { data, isLoading, isEmpty } = useCart()
 
@@ -81,11 +80,11 @@ const CartSidebarView: FC = () => {
               </a>
             </Link>
             <ul className={s.lineItemsList}>
-              {data!.lineItems.map((item: any) => (
+              {data.lineItems.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
-                  currencyCode={data!.currency.code}
+                  currencyCode={data.currency.code}
                 />
               ))}
             </ul>

@@ -1,37 +1,20 @@
-import { ChangeEvent, FocusEventHandler, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
 import s from './CartItem.module.css'
 import { useUI } from '@components/ui/context'
-import type { LineItem } from '@commerce/types/cart'
 import usePrice from '@framework/product/use-price'
 import useUpdateItem from '@framework/cart/use-update-item'
 import useRemoveItem from '@framework/cart/use-remove-item'
 import Quantity from '@components/ui/Quantity'
 
-type ItemOption = {
-  name: string
-  nameId: number
-  value: string
-  valueId: number
-}
-
 const placeholderImg = '/product-img-placeholder.svg'
 
-const CartItem = ({
-  item,
-  variant = 'default',
-  currencyCode,
-  ...rest
-}: {
-  variant?: 'default' | 'display'
-  item: LineItem
-  currencyCode: string
-}) => {
+const CartItem = ({ item, variant = 'default', currencyCode, ...rest }) => {
   const { closeSidebarIfPresent } = useUI()
   const [removing, setRemoving] = useState(false)
-  const [quantity, setQuantity] = useState<number>(item.quantity)
+  const [quantity, setQuantity] = useState(item.quantity)
   const removeItem = useRemoveItem()
   const updateItem = useUpdateItem({ item })
 
@@ -41,9 +24,7 @@ const CartItem = ({
     currencyCode,
   })
 
-  const handleChange = async ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async ({ target: { value } }) => {
     setQuantity(Number(value))
     await updateItem({ quantity: Number(value) })
   }
@@ -64,7 +45,7 @@ const CartItem = ({
   }
 
   // TODO: Add a type for this
-  const options = (item as any).options
+  const options = item.options
 
   useEffect(() => {
     // Reset the quantity state if the item quantity changes
@@ -93,7 +74,7 @@ const CartItem = ({
                 width={150}
                 height={150}
                 src={item.variant.image?.url || placeholderImg}
-                alt={item.variant.image?.altText || "Product Image"}
+                alt={item.variant.image?.altText || 'Product Image'}
                 unoptimized
               />
             </a>
@@ -112,7 +93,7 @@ const CartItem = ({
           </Link>
           {options && options.length > 0 && (
             <div className="flex items-center pb-1">
-              {options.map((option: ItemOption, i: number) => (
+              {options.map((option, i) => (
                 <div
                   key={`${item.id}-${option.name}`}
                   className="text-sm font-semibold text-accent-7 inline-flex items-center justify-center"

@@ -1,14 +1,8 @@
-import { FC } from 'react'
 import s from './ShippingWidget.module.css'
 import { ChevronRight, MapPin, Check } from '@components/icons'
 import cn from 'classnames'
 
-interface ComponentProps {
-  onClick?: () => any
-  isValid?: boolean
-}
-
-const ShippingWidget: FC<ComponentProps> = ({ onClick, isValid }) => {
+const ShippingWidget = ({ onClick, isValid }) => {
   /* Shipping Address
   Only available with checkout set to true -
   This means that the provider does offer checkout functionality. */
