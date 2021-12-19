@@ -1,22 +1,10 @@
-import { FC } from 'react'
 import Link from 'next/link'
-import type { Product } from '@commerce/types/product'
 import { Grid } from '@components/ui'
 import { ProductCard } from '@components/product'
 import s from './HomeAllProductsGrid.module.css'
 import { getCategoryPath, getDesignerPath } from '@lib/search'
 
-interface Props {
-  categories?: any
-  brands?: any
-  products?: Product[]
-}
-
-const HomeAllProductsGrid: FC<Props> = ({
-  categories,
-  brands,
-  products = [],
-}) => {
+const HomeAllProductsGrid = ({ categories, brands, products = [] }) => {
   return (
     <div className={s.root}>
       <div className={s.asideWrapper}>

@@ -1,21 +1,7 @@
 import cn from 'classnames'
 import s from './FeatureBar.module.css'
 
-interface FeatureBarProps {
-  className?: string
-  title: string
-  description?: string
-  hide?: boolean
-  action?: React.ReactNode
-}
-
-const FeatureBar: React.FC<FeatureBarProps> = ({
-  title,
-  description,
-  className,
-  action,
-  hide,
-}) => {
+const FeatureBar = ({ title, description, className, action, hide }) => {
   const rootClassName = cn(
     s.root,
     {

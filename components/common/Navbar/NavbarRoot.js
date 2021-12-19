@@ -1,9 +1,9 @@
-import { FC, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import throttle from 'lodash.throttle'
 import cn from 'classnames'
 import s from './Navbar.module.css'
 
-const NavbarRoot: FC = ({ children }) => {
+const NavbarRoot = ({ children }) => {
   const [hasScrolled, setHasScrolled] = useState(false)
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import Link from 'next/link'
-import { FC, useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import s from './DropdownMenu.module.css'
@@ -15,10 +15,6 @@ import {
   enableBodyScroll,
   clearAllBodyScrollLocks,
 } from 'body-scroll-lock'
-
-interface DropdownMenuProps {
-  open?: boolean
-}
 
 const LINKS = [
   {
@@ -35,13 +31,13 @@ const LINKS = [
   },
 ]
 
-const DropdownMenu: FC<DropdownMenuProps> = ({ open = false }) => {
+const DropdownMenu = ({ open = false }) => {
   const logout = useLogout()
   const { pathname } = useRouter()
   const { theme, setTheme } = useTheme()
   const [display, setDisplay] = useState(false)
   const { closeSidebarIfPresent } = useUI()
-  const ref = useRef() as React.MutableRefObject<HTMLUListElement>
+  const ref = useRef()
 
   useEffect(() => {
     if (ref.current) {

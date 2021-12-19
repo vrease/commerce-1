@@ -1,12 +1,12 @@
 import cn from 'classnames'
-import React, { FC } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { CommerceProvider } from '@framework'
 import { useUI } from '@components/ui/context'
-import type { Page } from '@commerce/types/page'
+
 import { Navbar, Footer } from '@components/common'
-import type { Category } from '@commerce/types/site'
+
 import ShippingView from '@components/checkout/ShippingView'
 import CartSidebarView from '@components/cart/CartSidebarView'
 import { useAcceptCookies } from '@lib/hooks/useAcceptCookies'
@@ -49,17 +49,7 @@ const Modal = dynamic(
   Object.assign(dynamicProps, { ssr: false })
 )
 
-interface Props {
-  pageProps: {
-    pages?: Page[]
-    categories: Category[]
-  }
-}
-
-const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
-  modalView,
-  closeModal,
-}) => {
+const ModalView = ({ modalView, closeModal }) => {
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}
@@ -69,18 +59,14 @@ const ModalView: FC<{ modalView: string; closeModal(): any }> = ({
   )
 }
 
-const ModalUI: FC = () => {
+const ModalUI = () => {
   const { displayModal, closeModal, modalView } = useUI()
   return displayModal ? (
     <ModalView modalView={modalView} closeModal={closeModal} />
   ) : null
 }
 
-const SidebarView: FC<{
-  sidebarView: string
-  closeSidebar(): any
-  links: Link[]
-}> = ({ sidebarView, closeSidebar, links }) => {
+const SidebarView = ({ sidebarView, closeSidebar, links }) => {
   return (
     <Sidebar onClose={closeSidebar}>
       {sidebarView === 'MOBILEMENU_VIEW' && <MenuSidebarView links={links} />}
@@ -92,7 +78,7 @@ const SidebarView: FC<{
   )
 }
 
-const SidebarUI: FC<{ links: any }> = ({ links }) => {
+const SidebarUI = ({ links }) => {
   const { displaySidebar, closeSidebar, sidebarView } = useUI()
   return displaySidebar ? (
     <SidebarView
@@ -103,10 +89,7 @@ const SidebarUI: FC<{ links: any }> = ({ links }) => {
   ) : null
 }
 
-const Layout: FC<Props> = ({
-  children,
-  pageProps: { categories = [], ...pageProps },
-}) => {
+const Layout = ({ children, pageProps: { categories = [], ...pageProps } }) => {
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   const { locale = 'en-US' } = useRouter()
   const navBarlinks = categories.slice(0, 2).map((c) => ({

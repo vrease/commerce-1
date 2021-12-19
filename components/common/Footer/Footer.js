@@ -1,19 +1,11 @@
-import { FC } from 'react'
 import cn from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { Page } from '@commerce/types/page'
 import getSlug from '@lib/get-slug'
 import { Github, Vercel } from '@components/icons'
 import { Logo, Container } from '@components/ui'
 import { I18nWidget } from '@components/common'
 import s from './Footer.module.css'
-
-interface Props {
-  className?: string
-  children?: any
-  pages?: Page[]
-}
 
 const links = [
   {
@@ -22,7 +14,7 @@ const links = [
   },
 ]
 
-const Footer: FC<Props> = ({ className, pages }) => {
+const Footer = ({ className, pages }) => {
   const { sitePages } = usePages(pages)
   const rootClassName = cn(s.root, className)
 
@@ -44,7 +36,7 @@ const Footer: FC<Props> = ({ className, pages }) => {
             <div className="grid md:grid-rows-4 md:grid-cols-3 md:grid-flow-col">
               {[...links, ...sitePages].map((page) => (
                 <span key={page.url} className="py-3 md:py-0 md:pb-4">
-                  <Link href={page.url!}>
+                  <Link href={page.url}>
                     <a className="text-accent-9 hover:text-accent-6 transition ease-in-out duration-150">
                       {page.name}
                     </a>
@@ -91,9 +83,9 @@ const Footer: FC<Props> = ({ className, pages }) => {
   )
 }
 
-function usePages(pages?: Page[]) {
+function usePages(pages) {
   const { locale } = useRouter()
-  const sitePages: Page[] = []
+  const sitePages = []
 
   if (pages) {
     pages.forEach((page) => {
@@ -110,7 +102,7 @@ function usePages(pages?: Page[]) {
 }
 
 // Sort pages by the sort order assigned in the BC dashboard
-function bySortOrder(a: Page, b: Page) {
+function bySortOrder(a, b) {
   return (a.sort_order ?? 0) - (b.sort_order ?? 0)
 }
 
