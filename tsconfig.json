@@ -36,20 +36,13 @@
     "lib/focus-trap.s",
     "framework/shopify/utils/mutations/index.tjs",
     "framework/shopify/utils/get-sort-variables.s",
-    "framework/shopify/utils/throw-user-errors.s"
+    "framework/shopify/utils/throw-user-errors.s",
+    "components/checkout/PaymentWidget/index.s",
+    "framework/commerce/auth/use-logout.s"
   ],
   "exclude": [
     "node_modules",
-    "./framework/local",
-    "./framework/bigcommerce",
     "./framework/shopify",
-    "./framework/swell",
-    "./framework/vendure",
-    "./framework/saleor",
-    "./framework/spree",
-    "./framework/ordercloud",
-    "./framework/kibocommerce",
-    "./framework/commercejs",
     "framework/local",
     "framework/bigcommerce",
     "framework/saleor",
